@@ -1,5 +1,11 @@
+import Description from "./components/Description/Description";
+
 function App() {
-  return <></>;
+  return (
+    <>
+      <Description />
+    </>
+  );
 }
 
 export default App;
