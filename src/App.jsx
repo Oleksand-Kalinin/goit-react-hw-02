@@ -8,26 +8,38 @@ function App() {
     good: 0,
     neutral: 0,
     bad: 0,
+    total: null,
+    positive() {
+      return Math.round((this.good / this.total) * 100);
+    },
   });
 
   const updateFeedbackObj = {
     updateFeedback(feedbackType) {
-      setFeedback({ ...feedback, [feedbackType]: feedback[feedbackType] + 1 });
+      feedback[feedbackType] += 1;
+      setFeedback({ ...feedback, total: feedback.total + 1 });
     },
 
     resetFeedback() {
-      setFeedback({ good: 0, neutral: 0, bad: 0 });
+      setFeedback({ ...feedback, good: 0, neutral: 0, bad: 0, total: null });
     },
   };
 
   return (
     <>
       <Description />
-      <Options updateFeedbackObj={updateFeedbackObj} />
+
+      <Options
+        updateFeedbackObj={updateFeedbackObj}
+        countTotalFeedback={feedback.total}
+      />
+
       <Feedback
         countGoodFeedback={feedback.good}
         countNeutralFeedback={feedback.neutral}
         countBadFeedback={feedback.bad}
+        countTotalFeedback={feedback.total}
+        positive={feedback.positive()}
       />
     </>
   );
