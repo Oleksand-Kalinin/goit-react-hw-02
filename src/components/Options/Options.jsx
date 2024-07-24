@@ -8,7 +8,7 @@ const Options = ({ updateFeedbackObj, countTotalFeedback }) => {
       <Button clicksMethod={() => updateFeedback("good")} text={"Good"} />
       <Button clicksMethod={() => updateFeedback("neutral")} text={"Neutral"} />
       <Button clicksMethod={() => updateFeedback("bad")} text={"Bad"} />
-      {countTotalFeedback && (
+      {Boolean(countTotalFeedback) && (
         <Button clicksMethod={resetFeedback} text={"Reset"} />
       )}
     </div>
