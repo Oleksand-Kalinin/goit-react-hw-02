@@ -1,19 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Description from "./components/Description/Description";
 import Feedback from "./components/Feedback/Feedback";
 import Options from "./components/Options/Options";
 
 function App() {
-  const [feedback, setFeedback] = useState({
-    good: 0,
-    neutral: 0,
-    bad: 0,
-    total() {
-      return this.good + this.neutral + this.bad;
-    },
-    positive() {
-      return Math.round((this.good / this.total()) * 100);
-    },
+  const [feedback, setFeedback] = useState(() => {
+    const dataFeedback = window.localStorage.getItem("data-feedback");
+    const fnFeedback = {
+      total() {
+        return this.good + this.neutral + this.bad;
+      },
+      positive() {
+        return Math.round((this.good / this.total()) * 100);
+      },
+    };
+
+    if (dataFeedback !== null) {
+      return {
+        ...JSON.parse(dataFeedback),
+        ...fnFeedback,
+      };
+    }
+
+    return {
+      good: 0,
+      neutral: 0,
+      bad: 0,
+      ...fnFeedback,
+    };
   });
 
   const updateFeedbackObj = {
@@ -25,6 +39,10 @@ function App() {
       setFeedback({ ...feedback, good: 0, neutral: 0, bad: 0 });
     },
   };
+
+  useEffect(() => {
+    window.localStorage.setItem("data-feedback", JSON.stringify(feedback));
+  }, [feedback]);
 
   return (
     <>
